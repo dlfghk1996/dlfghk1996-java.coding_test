@@ -1,6 +1,5 @@
 
 * https://www.acmicpc.net/problem/2581
-* https://st-lab.tistory.com/83
 * https://loosie.tistory.com/267
 
 * 개념 : 소수는 1과 자신만을 약수로 가지는 수

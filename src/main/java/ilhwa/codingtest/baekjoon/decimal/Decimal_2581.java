@@ -3,29 +3,28 @@ package ilhwa.codingtest.baekjoon.decimal;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
-// 소수 찾기
-// 문제 : 자연수 M과 N이 주어질 때 M이상 N이하의 자연수 중 소수인 것을
-//       모두 골라 이들 소수의 합과 최솟값을 찾는 프로그램을 작성하시오.
 public class Decimal_2581 {
-    public static boolean prime[];
 
-    public void solution1() throws IOException {
+
+    public void solution() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int M = Integer.parseInt(br.readLine());
         int N = Integer.parseInt(br.readLine());
 
-        prime = new boolean[N + 1];	// 배열 생성
-        get_prime();
+        // M 이상 N 이하의 자연수 중 소수 찾기
+        boolean[] prime= findPrimesInRange(N);
 
-        // 소수 합 및 최솟값
+        // 소수의 합과 최솟값 계산
         int sum = 0;
         int min = Integer.MAX_VALUE;
+
         for(int i = M; i <= N; i++) {
-            if(prime[i] == false) {	// false = 소수
+            if(prime[i]) {
                 sum += i;
-                if(min == Integer.MAX_VALUE) {	// 첫 소수가 최솟값임
+                if(i < min) {
                     min = i;
                 }
             }
@@ -42,15 +41,21 @@ public class Decimal_2581 {
 
 
     // 에라토스테네스 체 알고리즘
-    public static void get_prime() {
-        prime[0] = true;
-        prime[1] = true;
+    public static boolean[] findPrimesInRange(int N) {
+        // 초기에 모든 값은 true로 설정되며, 0과 1은 소수가 아니므로 false로 설정
+        boolean[] prime = new boolean[N + 1];
+        Arrays.fill(prime, true);
+        // 0과 1은 소수가 아님
+        prime[0] = prime[1] = false;
 
-        for(int i = 2; i <= Math.sqrt(prime.length); i++) {
-            if(prime[i]) continue;	// 이미 체크된 배열일 경우 skip
-            for(int j = i * i; j < prime.length; j += i) {
-                prime[j] = true;
+        // 에라토스테네스의 체 알고리즘: 소수일때 true
+        for(int i = 2; i <= Math.sqrt(N); i++) {
+            if(prime[i]) {
+                for(int j = i * i; j <= N; j += i) {
+                    prime[j] = false;
+                }
             }
         }
+        return prime;
     }
 }
